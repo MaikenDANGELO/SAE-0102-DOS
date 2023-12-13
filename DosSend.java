@@ -199,6 +199,8 @@ public class DosSend {
                 System.out.print(dataMod[index - 1] + " ");
             }
         }
+        long expectedEchantillons = (long)(FECH * duree * BAUDS);
+        System.out.println("Nombre d'échantillons attendu : " + expectedEchantillons);
     }
     
     
@@ -249,7 +251,7 @@ public class DosSend {
         // affiche les caractéristiques du signal dans la console
         System.out.println("Message : "+String.valueOf(dosSend.dataChar));
         System.out.println("\tNombre de symboles : "+dosSend.dataChar.length);
-        //System.out.println("\tNombre d'échantillons : "+dosSend.dataMod.length);
+        System.out.println("\tNombre d'échantillons : "+dosSend.dataMod.length);
         System.out.println("\tDurée : "+dosSend.duree+" s");
         System.out.println();
 
