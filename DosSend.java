@@ -183,7 +183,7 @@ public class DosSend {
     
             for (int j = 0; j < BAUDS; j++) {
                 double modulation = bits[i] == 1 ? Math.cos(phaseIncrement * j) : 1.0;
-                dataMod[index++] = MAX_AMP * modulation; // Utilisez MAX_AMP pour normaliser l'amplitude
+                dataMod[index++] = (byte) ((double) bits[i] * modulation);
             }
         }
     }
