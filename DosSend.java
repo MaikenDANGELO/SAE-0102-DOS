@@ -175,17 +175,17 @@ public class DosSend {
      * @param bits the data to modulate
      */
     public void modulateData(Byte[] bits) {
-        dataMod = new double[(bits.length + START_SEQ.length) * BAUDS];
+        int echantillonsParSymbole = FECH / BAUDS; // Ajustez en fonction de vos besoins
+        dataMod = new double[(bits.length + START_SEQ.length) * echantillonsParSymbole];
         int index = 0;
     
         // Ajouter la séquence de démarrage
         for (int i = 0; i < START_SEQ.length; i++) {
             double phaseIncrement = 2.0 * Math.PI * FP / FECH;
     
-            for (int j = 0; j < BAUDS; j++) {
+            for (int j = 0; j < echantillonsParSymbole; j++) {
                 double modulation = START_SEQ[i] == 1 ? Math.cos(phaseIncrement * j) : 0.0;
                 dataMod[index++] = modulation;
-                System.out.print(dataMod[index - 1] + " ");
             }
         }
     
@@ -193,14 +193,14 @@ public class DosSend {
         for (int i = 0; i < bits.length; i++) {
             double phaseIncrement = 2.0 * Math.PI * FP / FECH;
     
-            for (int j = 0; j < BAUDS; j++) {
+            for (int j = 0; j < echantillonsParSymbole; j++) {
                 double modulation = bits[i] == 1 ? Math.cos(phaseIncrement * j) : 0.0;
                 dataMod[index++] = modulation;
-                System.out.print(dataMod[index - 1] + " ");
             }
         }
-        long expectedEchantillons = (long)(FECH * duree * BAUDS);
-        System.out.println("Nombre d'échantillons attendu : " + expectedEchantillons);
+        long expectedEchantillons = (long)(FECH * duree);
+        System.out.println("\nNombre d'échantillons attendu : " + expectedEchantillons);
+        System.out.println("Index: " + index);
     }
     
     
