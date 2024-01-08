@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 
 public class DosRead {
 
@@ -41,27 +40,9 @@ public class DosRead {
         try {
             fileInputStream = new FileInputStream(path);
             fileInputStream.read(header);
-
-            // RIFF chunk descriptor
-            String chunkID = new String(header, 0, 4);
-            int chunkSize = byteArrayToInt(header, 4, 32);
-            String format = new String(header, 8, 4);
-
-            // Format subchunk
-            String subchunk1ID = new String(header, 12, 4);
-            int subchunk1Size = byteArrayToInt(header, 16, 32);
-            int audioFormat = byteArrayToInt(header, 20, 16);
-            int numChannels = byteArrayToInt(header, 22, 16);
             sampleRate = byteArrayToInt(header, 24, 32);
-            int byteRate = byteArrayToInt(header, 28, 32);
-            int blockAlign = byteArrayToInt(header, 32, 16);
             bitsPerSample = byteArrayToInt(header, 34, 16);
-
-            // Data subchunk
-            String subchunk2ID = new String(header, 36, 4);
             dataSize = byteArrayToInt(header, 40, 32);
-
-            // Print or use the obtained information as needed
             System.out.println("Sample Rate: " + sampleRate + " Hz");
             System.out.println("Bits per Sample: " + bitsPerSample + " bits");
             System.out.println("Data Size: " + dataSize + " bytes");
@@ -248,11 +229,9 @@ public class DosRead {
             }
         }
 
-        System.out.println("startIndex: " + startIndex);
-
         // Extraire les bits de données après la séquence de synchronisation
         if (startIndex != -1) {
-            int dataSize = (outputBits.length - startIndex) / 8;
+            dataSize = (outputBits.length - startIndex) / 8;
             decodedChars = new char[dataSize];
 
             for (int i = 0; i < dataSize; i++) {
@@ -322,7 +301,7 @@ public class DosRead {
         // Dessiner le signal en fonction du mode spécifié
         if (mode.equals("line")) {
             for (int i = start; i < stop; i++) {
-                StdDraw.line(i, sig[i], i + 1, sig[i + 1]);
+                StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
             }
         } else if (mode.equals("point")) {
             for (int i = start; i < stop; i++) {

@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DosSend {
@@ -109,7 +108,7 @@ public class DosSend {
             // Normaliser les échantillons à la valeur maximale du format
             double maxSample = getMaxSample(dataMod);
             for (int i = 0; i < dataMod.length; i++) {
-                dataMod[i] = (dataMod[i] / maxSample) * MAX_AMP;
+                if(maxSample != 0) dataMod[i] = (dataMod[i] / maxSample) * MAX_AMP;
             }
     
             // Convertir les échantillons normalisés en octets
@@ -226,7 +225,7 @@ public class DosSend {
         // Dessiner le signal en fonction du mode spécifié
         if (mode.equals("line")) {
             for (int i = start; i < stop; i++) {
-                StdDraw.line(i, sig[i], i+1, sig[i + 1]);
+                StdDraw.line(i, sig[i], i+1.0, sig[i + 1]);
             }
         } else if (mode.equals("point")) {
             for (int i = start; i < stop; i++) {
@@ -246,7 +245,7 @@ public class DosSend {
         DosSend dosSend = new DosSend("DosOok_message.wav");
         // lit le texte à envoyer depuis l'entrée standard
         // et calcule la durée de l'audio correspondant
-        dosSend.duree = (double)(dosSend.readTextData()+dosSend.START_SEQ.length/8)*8.0/dosSend.BAUDS;
+        dosSend.duree = (dosSend.readTextData()+dosSend.START_SEQ.length/8.0)*8.0/dosSend.BAUDS;
 
         // génère le signal modulé après avoir converti les données en bits
         dosSend.modulateData(dosSend.charToBits(dosSend.dataChar));
