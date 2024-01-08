@@ -1,3 +1,8 @@
+/*
+ * Code source du groupe de Quentin BELHADJ et Maïken D'ANGELO du groupe S1C1.
+ * Réalisé dans le cadre de la SAE 1-2.
+ */
+
 import java.io.*;
 
 public class DosRead {
@@ -35,17 +40,15 @@ public class DosRead {
      */
 
     public void readWavHeader(String path) {
-        byte[] header = new byte[44]; // The header is 44 bytes long
+        byte[] header = new byte[44]; // L'entête du fichier fait 44 bytes
 
+        // Ne lit que les informations nécessaires
         try {
             fileInputStream = new FileInputStream(path);
             fileInputStream.read(header);
             sampleRate = byteArrayToInt(header, 24, 32);
             bitsPerSample = byteArrayToInt(header, 34, 16);
             dataSize = byteArrayToInt(header, 40, 32);
-            System.out.println("Sample Rate: " + sampleRate + " Hz");
-            System.out.println("Bits per Sample: " + bitsPerSample + " bits");
-            System.out.println("Data Size: " + dataSize + " bytes");
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -108,28 +111,20 @@ public class DosRead {
             e.printStackTrace();
         }
 
-        // Convert the audio data to an array of doubles
+        // Convertit les données audio en un array de double
         audio = new double[dataSize / (bitsPerSample / 8)];
         int byteIndex = 0;
 
-        // Depending on the number of bits per sample, read and convert the data
-        if (bitsPerSample == 16) {
-            for (int i = 0; i < audio.length; i++) {
-                audio[i] = byteArrayToShort(audioData, byteIndex) / 32768.0; // Normalize to range [-1, 1]
-                byteIndex += 2;
-            }
-        } else if (bitsPerSample == 8) {
-            for (int i = 0; i < audio.length; i++) {
-                audio[i] = audioData[byteIndex] / 128.0; // Normalize to range [-1, 1]
-                byteIndex++;
-            }
-        } else {
-            // Handle other bit depths if necessary
+        for (int i = 0; i < audio.length; i++) {
+            // Normalise sur une plage de -1 à 1
+            audio[i] = byteArrayToShort(audioData, byteIndex) / 32768.0;
+            byteIndex += 2;
         }
-
     }
 
-    // Helper method to convert a little-endian byte array to a short
+    /*
+     * Fonction permettant de convertir un array de byte en short
+     */
     private static short byteArrayToShort(byte[] bytes, int offset) {
         return (short) (((bytes[offset + 1] & 0xFF) << 8) | (bytes[offset] & 0xFF));
     }
@@ -159,11 +154,10 @@ public class DosRead {
     public void audioLPFilter(int n) {
         double[] filteredAudio = new double[audio.length];
 
-        // Appliquer le filtre passe-bas
         for (int i = 0; i < audio.length; i++) {
             double sum = 0.0;
 
-            // Calculer la moyenne glissante sur n échantillons
+            // Calcule la moyenne glissante sur n échantillons
             for (int j = Math.max(0, i - n + 1); j <= i; j++) {
                 sum += audio[j];
             }
@@ -171,7 +165,7 @@ public class DosRead {
             filteredAudio[i] = sum / Math.min(n, i + 1);
         }
 
-        // Remplacer le tableau audio avec les données filtrées
+        // Remplace les données audio par les données traitées par le filtre
         System.arraycopy(filteredAudio, 0, audio, 0, audio.length);
     }
 
@@ -185,28 +179,22 @@ public class DosRead {
      * 
      */
 
-     public void audioResampleAndThreshold(int period, int threshold) {
+    public void audioResampleAndThreshold(int period, int threshold) {
         int newSize = audio.length / period;
         outputBits = new int[newSize];
-    
-        double maxAmplitude = 0.0;
-        for (int i = 0; i < audio.length; i++) {
-            maxAmplitude = Math.max(maxAmplitude, Math.abs(audio[i]));
-        }
-    
+
         for (int i = 0; i < newSize; i++) {
-            // Calculate the average over the specified period
+            // Calcule la moyenne sur la période spécifiée
             double sum = 0.0;
             for (int j = i * period; j < (i + 1) * period && j < audio.length; j++) {
                 sum += audio[j];
             }
-            double average = (sum / Math.min(period, audio.length - i * period))*100000;
-    
-            // Apply the dynamic threshold
+            double average = (sum / Math.min(period, audio.length - i * period)) * 100000;
+
+            // Applique le palier
             outputBits[i] = (Math.abs(average) >= threshold) ? 1 : 0;
         }
     }
-    
 
     /**
      * 
@@ -220,7 +208,7 @@ public class DosRead {
      */
 
     public void decodeBitsToChar() {
-        // Trouvez la séquence de synchronisation START_SEQ
+        // Trouve la séquence de départ pour synchronisation
         int startIndex = -1;
         for (int i = 0; i <= outputBits.length - START_SEQ.length; i++) {
             if (isMatch(outputBits, i, START_SEQ)) {
@@ -228,8 +216,7 @@ public class DosRead {
                 break;
             }
         }
-
-        // Extraire les bits de données après la séquence de synchronisation
+        // Extrait les bits de données après la séquence de départ
         if (startIndex != -1) {
             dataSize = (outputBits.length - startIndex) / 8;
             decodedChars = new char[dataSize];
@@ -247,7 +234,9 @@ public class DosRead {
         }
     }
 
-    // Fonction utilitaire pour vérifier si une séquence correspond
+    /*
+     * Fonction permettant de vérifier la correspondance de séquences
+     */
     private static boolean isMatch(int[] bits, int startIndex, int[] sequence) {
         for (int i = 0; i < sequence.length; i++) {
             if (bits[startIndex + i] != sequence[i]) {
@@ -269,7 +258,7 @@ public class DosRead {
         for (char value : data) {
             System.out.print(value);
         }
-        System.out.println(); // Ajouter un saut de ligne à la fin pour une sortie propre
+        System.out.println();
     }
 
     /**
@@ -289,37 +278,24 @@ public class DosRead {
      */
 
     public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
-        // Initialiser StdDraw
-        StdDraw.setCanvasSize(1920, 1080);
+        // Initialisation de StdDraw
+        StdDraw.setCanvasSize(1280, 720);
         StdDraw.setXscale(0, sig.length);
         StdDraw.setYscale(-1, 1);
         StdDraw.setTitle(title);
         StdDraw.setPenRadius(0.001);
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.enableDoubleBuffering();
-    
-        // Dessiner le signal en fonction du mode spécifié
-        if (mode.equals("line")) {
-            for (int i = start; i < stop; i++) {
-                StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
-            }
-        } else if (mode.equals("point")) {
-            for (int i = start; i < stop; i++) {
-                StdDraw.point(i, sig[i]);
-            }
-        } else {
-            System.out.println("Mode non pris en charge.");
+        // Dessin du signal audio dans la fenetre StdDraw
+        for (int i = start; i < stop; i++) {
+            StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
         }
-    
-        // Attendre que l'utilisateur ferme la fenêtre
         StdDraw.show();
     }
-    
-    
 
     /**
      * 
-     * Un exemple de main qui doit pourvoir être exécuté avec les méthodes
+     * Un exemple de main qui doit pouvoir être exécuté avec les méthodes
      * 
      * que vous aurez conçues.
      * 
