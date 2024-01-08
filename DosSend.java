@@ -213,11 +213,22 @@ public class DosSend {
      * @param mode "line" or "point"
      * @param title the title of the window
      */
-    public static void displaySig(double[] sig, int start, int stop, String mode, String title){
-      /*
-          À compléter
-      */
+    public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
+        StdDraw.setXscale(0, sig.length);
+        StdDraw.setYscale(-1, 1);
+        StdDraw.setTitle(title);
+        StdDraw.enableDoubleBuffering();
+        int length = Math.min(sig.length, stop + 1);
+        for (int i = start; i < length; i++) {
+            // Utiliser StdDraw pour dessiner le signal
+            // Exemple basique : dessiner une ligne entre les points successifs
+            StdDraw.line(i, sig[i], i + 1, sig[i + 1]);
+        }
+
+        // Appeler StdDraw.show() pour actualiser la fenêtre
+        StdDraw.show();
     }
+    
 
     /**
      * Display signals in a window
@@ -256,6 +267,6 @@ public class DosSend {
         System.out.println();
 
         // exemple d'affichage du signal modulé dans une fenêtre graphique
-        //displaySig(dosSend.dataMod, 1000, 3000, "line", "Signal modulé");
+        displaySig(dosSend.dataMod, 1000, 3000, "line", "Signal modulé");
     }
 }

@@ -334,10 +334,30 @@ public class DosRead {
      * 
      */
 
-     public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
+    public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
         // Initialiser StdDraw
-        
+        StdDraw.setXscale(0, sig.length);
+        StdDraw.setYscale(-1, 1);
+        StdDraw.setTitle(title);
+        StdDraw.enableDoubleBuffering();
+    
+        // Dessiner le signal en fonction du mode spécifié
+        if (mode.equals("line")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.line(i, sig[i], i + 1, sig[i + 1]);
+            }
+        } else if (mode.equals("point")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.point(i, sig[i]);
+            }
+        } else {
+            System.out.println("Mode non pris en charge.");
+        }
+    
+        // Attendre que l'utilisateur ferme la fenêtre
+        StdDraw.show();
     }
+    
     
 
     /**
