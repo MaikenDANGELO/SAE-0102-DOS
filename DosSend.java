@@ -1,6 +1,7 @@
 /*
  * Code source du groupe de Quentin BELHADJ et Maïken D'ANGELO du groupe S1C1.
  * Réalisé dans le cadre de la SAE 1-2.
+ * Il peut arriver que le displaySig s'ouvre dans une petite fenêtre carrée n'affichant qu'une partie du signal. Pour régler le bug il suffit de relancer le programme.
  */
 
 import java.io.File;
