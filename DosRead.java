@@ -234,7 +234,7 @@ public class DosRead {
             System.out.println("Average: " + average);
     
             // Apply the dynamic threshold
-            outputBits[i] = (Math.abs(average)*100000 >= threshold) ? 1 : 0;
+            outputBits[i] = (Math.abs(average) >= threshold) ? 1 : 0;
         }
     
         for (int a : outputBits) {
@@ -334,15 +334,11 @@ public class DosRead {
      * 
      */
 
-    public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
-
-        /*
-         * 
-         * À compléter. Méthode a priori identique à sa version dans DosSend.
-         * 
-         */
-
+     public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
+        // Initialiser StdDraw
+        
     }
+    
 
     /**
      * 
