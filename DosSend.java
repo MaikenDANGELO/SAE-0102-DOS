@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DosSend {
@@ -204,7 +205,6 @@ public class DosSend {
     }
     
     
-
     /**
      * Display a signal in a window
      * @param sig  the signal to display
@@ -214,35 +214,31 @@ public class DosSend {
      * @param title the title of the window
      */
     public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
-        StdDraw.setXscale(0, sig.length);
-        StdDraw.setYscale(-1, 1);
+        // Initialiser StdDraw
+        StdDraw.setCanvasSize(1280, 720);
+        StdDraw.setXscale(1000, 3000);
+        StdDraw.setYscale(-100000, 100000);
         StdDraw.setTitle(title);
+        StdDraw.setPenRadius(0.001);
+        StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.enableDoubleBuffering();
-        int length = Math.min(sig.length, stop + 1);
-        for (int i = start; i < length; i++) {
-            // Utiliser StdDraw pour dessiner le signal
-            // Exemple basique : dessiner une ligne entre les points successifs
-            StdDraw.line(i, sig[i], i + 1, sig[i + 1]);
+    
+        // Dessiner le signal en fonction du mode spécifié
+        if (mode.equals("line")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.line(i, sig[i], i+1, sig[i + 1]);
+            }
+        } else if (mode.equals("point")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.point(i, sig[i]);
+            }
+        } else {
+            System.out.println("Mode non pris en charge.");
         }
-
-        // Appeler StdDraw.show() pour actualiser la fenêtre
+    
+        // Attendre que l'utilisateur ferme la fenêtre
         StdDraw.show();
     }
-    
-
-    /**
-     * Display signals in a window
-     * @param listOfSigs  a list of the signals to display
-     * @param start the first sample to display
-     * @param stop the last sample to display
-     * @param mode "line" or "point"
-     * @param title the title of the window
-     */
-    //public static void displaySig(List<double[]> listOfSigs, int start, int stop, String mode, String title){
-      /*
-          À compléter
-      */
-    //}
 
 
     public static void main(String[] args) {

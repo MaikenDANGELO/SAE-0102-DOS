@@ -145,9 +145,6 @@ public class DosRead {
         } else {
             // Handle other bit depths if necessary
         }
-        // Print out some values for debugging
-        System.out.println("First few bytes of audio data: " + Arrays.toString(Arrays.copyOf(audioData, 16)));
-        System.out.println("First few values of audio array: " + Arrays.toString(Arrays.copyOf(audio, 10)));
 
     }
 
@@ -195,10 +192,6 @@ public class DosRead {
 
         // Remplacer le tableau audio avec les données filtrées
         System.arraycopy(filteredAudio, 0, audio, 0, audio.length);
-        for(double a : filteredAudio){
-            //System.out.print(a+" ");
-        }
-        System.out.println("");
     }
 
     /**
@@ -220,9 +213,6 @@ public class DosRead {
             maxAmplitude = Math.max(maxAmplitude, Math.abs(audio[i]));
         }
     
-        System.out.println("Max Amplitude: " + maxAmplitude);
-        System.out.println("Threshold: " + threshold);
-    
         for (int i = 0; i < newSize; i++) {
             // Calculate the average over the specified period
             double sum = 0.0;
@@ -231,16 +221,9 @@ public class DosRead {
             }
             double average = (sum / Math.min(period, audio.length - i * period))*100000;
     
-            System.out.println("Average: " + average);
-    
             // Apply the dynamic threshold
             outputBits[i] = (Math.abs(average) >= threshold) ? 1 : 0;
         }
-    
-        for (int a : outputBits) {
-            System.out.print(a + " ");
-        }
-        System.out.println("");
     }
     
 
@@ -256,14 +239,6 @@ public class DosRead {
      */
 
     public void decodeBitsToChar() {
-        // Trouver la séquence de synchronisation START_SEQ
-        // Imprimez les valeurs binaires de outputBits
-        System.out.print("outputBits: ");
-        for (int bite : outputBits) {
-            System.out.print(bite);
-        }
-        System.out.println(); // Ajoutez un saut de ligne pour une sortie propre
-
         // Trouvez la séquence de synchronisation START_SEQ
         int startIndex = -1;
         for (int i = 0; i <= outputBits.length - START_SEQ.length; i++) {
@@ -336,9 +311,12 @@ public class DosRead {
 
     public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
         // Initialiser StdDraw
+        StdDraw.setCanvasSize(1920, 1080);
         StdDraw.setXscale(0, sig.length);
         StdDraw.setYscale(-1, 1);
         StdDraw.setTitle(title);
+        StdDraw.setPenRadius(0.001);
+        StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.enableDoubleBuffering();
     
         // Dessiner le signal en fonction du mode spécifié
