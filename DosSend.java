@@ -7,6 +7,7 @@
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Scanner;
 
 public class DosSend {
@@ -17,12 +18,12 @@ public class DosSend {
     final int MAX_AMP = (1 << (FMT - 1)) - 1; // amplitude max en entier
     final int CHANNELS = 1; // nombre de voies audio (1 = mono)
     final int[] START_SEQ = { 1, 0, 1, 0, 1, 0, 1, 0 }; // séquence de synchro au début
-    static final Scanner input = new Scanner(System.in); // pour lire le fichier texte
+    final Scanner input = new Scanner(System.in); // pour lire le fichier texte
 
     long taille; // nombre d'octets de données à transmettre
     double duree; // durée de l'audio
     double[] dataMod; // données modulées
-    static char[] dataChar; // données en char
+    char[] dataChar; // données en char
     FileOutputStream outStream; // flux de sortie pour le fichier .wav
 
     /**
@@ -104,7 +105,7 @@ public class DosSend {
             // Ecrit la taille des données en octets.
             writeLittleEndian((int) nbBytes, 4, outStream);
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.printf(e.toString());
         }
     }
 
@@ -152,10 +153,9 @@ public class DosSend {
      * 
      * @return the number of characters read
      */
-    public static int readTextData() {
-        /** à compléter */
-        dataChar = input.nextLine().toCharArray();
-        return dataChar.length;
+    public int readTextData() {
+        this.dataChar = input.nextLine().toCharArray();
+        return this.dataChar.length;
     }
 
     /**
@@ -248,6 +248,28 @@ public class DosSend {
         StdDraw.show();
     }
 
+    public static void displaySig(List<double[]> listOfSigs, int start, int stop, String mode, String title) {
+        // Initialisation de StdDraw
+        StdDraw.setCanvasSize(1280, 720);
+        StdDraw.setXscale(start, stop);
+        StdDraw.setYscale(-100000, 100000); // Echelle pour représenter correctement les valeurs de sig
+        StdDraw.setTitle(title);
+        StdDraw.setPenRadius(0.001);
+        StdDraw.setPenColor(StdDraw.BLUE);
+        StdDraw.enableDoubleBuffering();
+
+        // Dessin du signal audio dans la fenêtre StdDraw
+        if (mode.equals("line")) {
+            for (double[] sig : listOfSigs) {
+                for (int i = start; i < stop; i++) {
+                    StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
+                }
+            }
+        } // Possibilité d'ajouter d'autres modes d'affichage
+
+        StdDraw.show();
+    }
+
     public static void main(String[] args) {
         // créé un objet DosSend
         DosSend dosSend = new DosSend("DosOok_message.wav");
@@ -263,13 +285,13 @@ public class DosSend {
         dosSend.writeNormalizeWavData();
 
         // affiche les caractéristiques du signal dans la console
-        System.out.println("Message : " + String.valueOf(dosSend.dataChar));
+        //System.out.println("Message : " + String.valueOf(dosSend.dataChar));
         System.out.println("\tNombre de symboles : " + dosSend.dataChar.length);
         System.out.println("\tNombre d'échantillons : " + dosSend.dataMod.length);
         System.out.println("\tDurée : " + dosSend.duree + " s");
         System.out.println();
 
         // exemple d'affichage du signal modulé dans une fenêtre graphique
-        displaySig(dosSend.dataMod, 1000, 3000, "line", "Signal modulé");
+        //displaySig(dosSend.dataMod, 1000, 3000, "line", "Signal modulé");
     }
 }

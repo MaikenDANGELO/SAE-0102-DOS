@@ -341,6 +341,8 @@ public class DosRead {
         // Open the WAV file and read its header
 
         DosRead dosRead = new DosRead();
+        LPFilter1 lpfilter1 = new LPFilter1();
+        LPFilter2 lpfilter2 = new LPFilter2(0.44);
 
         dosRead.readWavHeader(wavFilePath);
 
@@ -364,7 +366,9 @@ public class DosRead {
 
         // apply a low pass filter
 
-        dosRead.audioLPFilter(44);
+        // dosRead.audioLPFilter(44);
+        dosRead.audio =  lpfilter1.lpFilter(dosRead.audio, 44100.0, 44);
+        //dosRead.audio = lpfilter2.lpFilter(dosRead.audio, 44100.0, 44);
 
         // Resample audio data and apply a threshold to output only 0 & 1
 
@@ -374,13 +378,13 @@ public class DosRead {
 
         if (dosRead.decodedChars != null) {
 
-            System.out.print("Message décodé : ");
+            //System.out.print("Message décodé : ");
 
-            printIntArray(dosRead.decodedChars);
+            //printIntArray(dosRead.decodedChars);
 
         }
 
-        displaySig(dosRead.audio, 0, dosRead.audio.length - 1, "line", "Signal audio");
+        //displaySig(dosRead.audio, 0, dosRead.audio.length - 1, "line", "Signal audio");
 
         // Close the file input stream
 
