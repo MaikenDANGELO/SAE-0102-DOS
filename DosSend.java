@@ -238,9 +238,11 @@ public class DosSend {
         StdDraw.enableDoubleBuffering();
 
         // Dessin du signal audio dans la fenêtre StdDraw
-        for (int i = start; i < stop; i++) {
-            StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
-        }
+        if (mode.equals("line")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
+            }
+        } // Possibilité d'ajouter d'autres modes d'affichage
 
         StdDraw.show();
     }

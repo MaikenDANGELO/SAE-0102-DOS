@@ -170,6 +170,27 @@ public class DosRead {
         System.arraycopy(filteredAudio, 0, audio, 0, audio.length);
     }
 
+    public void audioLPFilter2(int n) {
+        double[] filteredAudio = new double[audio.length];
+        double sum = 0.0;
+
+        for (int i = 0; i < audio.length; i++) {
+            if (i >= n) {
+                // Soustrait la valeur qui n'est plus incluse dans la fenêtre
+                sum -= audio[i - n];
+            }
+
+            // Ajoute la nouvelle valeur à la fenêtre
+            sum += audio[i];
+
+            // Calcule la moyenne glissante
+            filteredAudio[i] = sum / Math.min(n, i + 1);
+        }
+
+        // Remplace les données audio par les données traitées par le filtre
+        System.arraycopy(filteredAudio, 0, audio, 0, audio.length);
+    }
+
     /**
      * 
      * Resample the audio array and apply a threshold
@@ -287,10 +308,12 @@ public class DosRead {
         StdDraw.setPenRadius(0.001);
         StdDraw.setPenColor(StdDraw.BLUE);
         StdDraw.enableDoubleBuffering();
-        // Dessin du signal audio dans la fenetre StdDraw
-        for (int i = start; i < stop; i++) {
-            StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
-        }
+        // Dessin du signal audio dans la fenêtre StdDraw
+        if (mode.equals("line")) {
+            for (int i = start; i < stop; i++) {
+                StdDraw.line(i, sig[i], i + 1.0, sig[i + 1]);
+            }
+        } // Possibilité d'ajouter d'autres modes d'affichage
         StdDraw.show();
     }
 
