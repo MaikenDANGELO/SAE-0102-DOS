@@ -367,8 +367,8 @@ public class DosRead {
         // apply a low pass filter
 
         // dosRead.audioLPFilter(44);
-        dosRead.audio =  lpfilter1.lpFilter(dosRead.audio, 44100.0, 44);
-        //dosRead.audio = lpfilter2.lpFilter(dosRead.audio, 44100.0, 44);
+        //dosRead.audio =  lpfilter1.lpFilter(dosRead.audio, 44100.0, 44);
+        dosRead.audio = lpfilter2.lpFilter(dosRead.audio, 44100.0, 44);
 
         // Resample audio data and apply a threshold to output only 0 & 1
 
