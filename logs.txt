@@ -1,0 +1,79 @@
+Execution n° 1 : Réussite
+Cette execution nous semblait pertinente, car le message originel est sous la forme de code java, donc quelque chose de précis et rigoureux. Le DosRead l'a retranscris parfaitement. De plus, en guise de test par le feu, nous avons enregistré le son produit par le DosSend avec un microphone médiocre, et avons repassé le son enregistré dans le DosRead, qui a encore une fois parfaitement compris le message encodé.
+
+Nombre d'échantillons attendu : 268128
+Message : public static void main(String[] args){System.out.println("Hello World!");}
+	Nombre de symboles : 75
+	Nombre d'échantillons : 268128
+	Durée : 6.08 s
+
+Fichier audio: DosOok_message.wav
+	Sample Rate: 44100 Hz
+	Bits per Sample: 16 bits
+	Data Size: 536256 bytes
+Message décodé : public static void main(String[] args){System.out.println("Hello World!");}
+
+
+Execution n° 2 : Réussite
+Cette execution a été faite pour comparer le résultat avec celui de référence dans les consignes. Nous avons bien le même nombre d'échantillons et la même durée que la référence. Mais l'onde audio est différente. Nous ne savons pas d'où viens le problème. Peut-être un défaut dans la référence ? Le DosRead décode parfaitement le message.
+
+Nombre d'échantillons attendu : 49392
+Message : Hello World !
+	Nombre de symboles : 13
+	Nombre d'échantillons : 49392
+	Durée : 1.12 s
+
+Fichier audio: DosOok_message.wav
+	Sample Rate: 44100 Hz
+	Bits per Sample: 16 bits
+	Data Size: 98784 bytes
+Message décodé : Hello World !
+
+
+Execution n° 3 : Réussite
+Ce test est un test aléatoire pour voir ce que ça donnerait sur une phrase normale. Nous l'avons aussi fait pour voir ce que ça donnerait avec des accents. Le DosRead comprend parfaitement le message.
+
+Nombre d'échantillons attendu : 278712
+Message : Bonjour je suis une amatrice d'emmental ! Ne l'êtes vous pas ? évènement <!!!>
+	Nombre de symboles : 78
+	Nombre d'échantillons : 278712
+	Durée : 6.32 s
+
+Fichier audio: DosOok_message.wav
+	Sample Rate: 44100 Hz
+	Bits per Sample: 16 bits
+	Data Size: 557424 bytes
+Message décodé : Bonjour je suis une amatrice d'emmental ! Ne l'êtes vous pas ? évènement <!!!>
+
+
+Execution n° 4 : Réussite mais lent
+Cette execution avait pour but de mettre à l'épreuve l'efficacité du programme avec un paragraphe entier de Lorem Ipsum. Le programme a fait preuve d'une certaine lenteur, mais a réussi à encodé et decoder le message parfaitement. On peut dire que c'est une réussite.
+
+Nombre d'échantillons attendu : 2885904
+Message : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mollis elit. Integer et mauris at est facilisis mattis sit amet sit amet enim. Integer sed tempus arcu. Suspendisse vestibulum congue molestie. Etiam ipsum ligula, molestie sed finibus ac, consequat vel ipsum. Nam eget elit eu tortor iaculis maximus ac quis nisl. Morbi gravida purus nec ipsum egestas, vitae cursus turpis facilisis. Aenean id dictum urna. Maecenas placerat aliquam neque, eu dignissim enim cursus eu. Nullam viverra tincidunt interdum. Phasellus scelerisque dui velit. Etiam eget tristique lectus, vitae efficitur turpis. Praesent rutrum metus ac sem placerat, in tristique est bibendum. Aliquam porttitor consequat consequat. Curabitur auctor a orci non accumsan. Maecenas eget sapien id sapien dignissim dictum quis eget elit. 
+	Nombre de symboles : 817
+	Nombre d'échantillons : 2885904
+	Durée : 65.44 s
+
+Fichier audio: DosOok_message.wav
+	Sample Rate: 44100 Hz
+	Bits per Sample: 16 bits
+	Data Size: 5771808 bytes
+Message décodé : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel mollis elit. Integer et mauris at est facilisis mattis sit amet sit amet enim. Integer sed tempus arcu. Suspendisse vestibulum congue molestie. Etiam ipsum ligula, molestie sed finibus ac, consequat vel ipsum. Nam eget elit eu tortor iaculis maximus ac quis nisl. Morbi gravida purus nec ipsum egestas, vitae cursus turpis facilisis. Aenean id dictum urna. Maecenas placerat aliquam neque, eu dignissim enim cursus eu. Nullam viverra tincidunt interdum. Phasellus scelerisque dui velit. Etiam eget tristique lectus, vitae efficitur turpis. Praesent rutrum metus ac sem placerat, in tristique est bibendum. Aliquam porttitor consequat consequat. Curabitur auctor a orci non accumsan. Maecenas eget sapien id sapien dignissim dictum quis eget elit. 
+
+
+Execution n° 5: Réussite avec 98,12% de précision
+Cette execution avait pour but de tester la précision du programme quant aux caractères spéciaux. La précision est parfaite mise à part le tout dernier caractère qui n'est pas bon.
+La précision est donc de 98,12%. Il peut aussi s'agir d'une exception avec le caractère œ qui n'est pas reconnu. C'est donc une réussite, mise à part ce petit soucis.
+
+Nombre d'échantillons attendu : 190512
+Message : <ù%!§:/;.,?$£ê*µ¨1234567890)°]=+}àç_è-('"é&#{[|^@]})œ
+	Nombre de symboles : 53
+	Nombre d'échantillons : 190953
+	Durée : 4.32 s
+
+Fichier audio: DosOok_message.wav
+	Sample Rate: 44100 Hz
+	Bits per Sample: 16 bits
+	Data Size: 381024 bytes
+Message décodé : <ù%!§:/;.,?$£ê*µ¨1234567890)°]=+}àç_è-('"é&#{[|^@]})©
