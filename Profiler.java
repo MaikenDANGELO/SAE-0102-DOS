@@ -79,6 +79,15 @@ interface LPFilterFunction {
         }
         return result;
     }
+    public static String timestampS(long clock0) {
+        String result = null;
+        if (clock0 > 0) {
+            double elapsed = (System.nanoTime() - clock0) / 1e9;
+            String unit = "";
+            result = String.format("%.4g%s", elapsed, unit);
+        }
+        return result;
+    }
 
     public static long timestamp() {
         return System.nanoTime();

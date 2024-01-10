@@ -271,6 +271,7 @@ public class DosSend {
     }
 
     public static void main(String[] args) {
+        long startTime = System.nanoTime();
         // créé un objet DosSend
         DosSend dosSend = new DosSend("DosOok_message.wav");
         // lit le texte à envoyer depuis l'entrée standard
@@ -289,6 +290,7 @@ public class DosSend {
         System.out.println("\tNombre de symboles : " + dosSend.dataChar.length);
         System.out.println("\tNombre d'échantillons : " + dosSend.dataMod.length);
         System.out.println("\tDurée : " + dosSend.duree + " s");
+        System.out.println(Profiler.timestampS(startTime)+"s elapsed");
         System.out.println();
 
         // exemple d'affichage du signal modulé dans une fenêtre graphique
